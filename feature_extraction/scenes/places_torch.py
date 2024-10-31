@@ -52,30 +52,9 @@ def load_labels(rootpath='.'):
         classes_macro = {}
         for line in lines:
             items = line.rstrip().split()
-            classes_macro[items[0]] = (int(items[1])-1, int(items[2])-1)
-            # labels_IO1.append(int(items[1]) -1) # 0 is indoor, 1 is outdoor
-            # labels_IO2.append(int(items[2]) -1) # 0 is residential/nature, 1 is commercial/urban
-    # labels_IO1 = np.array(labels_IO1)
-    # labels_IO2 = np.array(labels_IO2)
+            classes_macro[items[0][3:]] = (int(items[1])-1, int(items[2])-1)
 
-    # # scene attribute relevant
-    # file_name_attribute = 'labels_sunattribute.txt'
-    # if not os.access(file_name_attribute, os.W_OK):
-    #     synset_url = 'https://raw.githubusercontent.com/csailvision/places365/master/labels_sunattribute.txt'
-    #     os.system('wget ' + synset_url)
-    # with open(file_name_attribute) as f:
-    #     lines = f.readlines()
-    #     labels_attribute = [item.rstrip() for item in lines]
-    # file_name_W = 'W_sceneattribute_wideresnet18.npy'
-    # if not os.access(file_name_W, os.W_OK):
-    #     synset_url = 'http://places2.csail.mit.edu/models_places365/W_sceneattribute_wideresnet18.npy'
-    #     os.system('wget ' + synset_url)
-    # W_attribute = np.load(file_name_W)
-
-    return classes, classes_macro#, labels_attribute, W_attribute
-
-# def hook_feature(module, input, output):
-#     features_blobs.append(np.squeeze(output.data.cpu().numpy()))
+    return classes, classes_macro
 
 def returnCAM(feature_conv, weight_softmax, class_idx):
     # generate the class activation maps upsample to 256x256
@@ -112,10 +91,6 @@ def load_model(rootpath='.', device='cpu'):
 
     model = torch.load(model_file, map_location=lambda storage, loc: storage) # allow cpu
     model.eval()
-    # hook the feature extractor
-    # features_names = ['layer4','avgpool'] # this is the last conv layer of the resnet
-    # for name in features_names:
-    #     model._modules.get(name).register_forward_hook(hook_feature)
     return model
 
 
