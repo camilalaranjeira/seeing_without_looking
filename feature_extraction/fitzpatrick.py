@@ -6,9 +6,6 @@ from skimage import io, color
 from matplotlib.path import Path
 from scipy.signal import find_peaks, convolve2d
 
-
-predictor = dlib.shape_predictor('fitzpatrick/shape_predictor_68_face_landmarks.dat')
-
 class Segmentation():
     ##### Soure from: https://github.com/Jeanvit/PySkinDetection #####
     
@@ -60,6 +57,8 @@ class Segmentation():
 class SkinTone():
     ##### Source from https://github.com/mattgroh/fitzpatrick17k/blob/main/ita_fitzpatrick_analysis.ipynb
     
+    def __init__(self, modelpath='shape_predictor_68_face_landmarks.dat'):
+        self.predictor = dlib.shape_predictor(modelpath)
     
     def get_slices(self, smooth, shape):
 
@@ -108,7 +107,7 @@ class SkinTone():
     
     def ITA(self, img):
         
-        shape = predictor(img, dlib.rectangle(0, 0, img.shape[1], img.shape[0]))
+        shape = self.predictor(img, dlib.rectangle(0, 0, img.shape[1], img.shape[0]))
         shape = imutils.face_utils.shape_to_np(shape)
 
         # ITA MAP
@@ -195,39 +194,7 @@ class SkinTone():
 #         Bmask = np.where(np.isnan(L), 0, 255) 
 
         return ITA, L, B, A
-    
-    
-    
-#         def ITA(self, image):
-#         """
-#         Calculates the individual typology angle (ITA) for a given 
-#         RGB image.
-#         """
 
-#         # Convert to CIE-LAB color space
-# #         RGB = Image.open(image)
-#         CIELAB = np.array(color.rgb2lab(image))
-
-#         # Get L and B (subset to +- 1 std from mean)
-#         L = CIELAB[:, :, 0]
-#         L = np.where(L != 0, L, np.nan)
-#         std, mean = np.nanstd(L), np.nanmean(L)
-#         L = np.where(L >= mean - std, L, np.nan)
-#         L = np.where(L <= mean + std, L, np.nan)
-
-#         B = CIELAB[:, :, 2]
-#         B = np.where(B != 0, B, np.nan)
-#         std, mean = np.nanstd(B), np.nanmean(B)
-#         B = np.where(B >= mean - std, B, np.nan)
-#         B = np.where(B <= mean + std, B, np.nan)
-
-#         # Calculate ITA
-        
-        
-#         ITA = math.atan2(np.nanmean(L) - 50, np.nanmean(B)) * (180 / np.pi)
-
-#         return ITA
-    
     
     
     
@@ -265,11 +232,3 @@ class SkinTone():
                 return ('dark', 6)
             else:
                 return None
-
-    
-    
-    
-    
-    
-    
-    
