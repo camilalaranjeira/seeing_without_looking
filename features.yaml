@@ -1,0 +1,139 @@
+## label
+label:
+  type: classification
+  cardinality: single
+  variable_types:
+    - categorical 
+  hierarchy_levels: 1
+  source: Porn2k
+
+## context
+object:
+  type: detection
+  cardinality: multiple
+  variable_types:
+    - categorical # name
+    - none # bbox
+    - numeric # conf
+  hierarchy_levels: 2
+  source: YOLOv7-COCO
+scene:
+  type: classification
+  cardinality: single
+  variable_types:
+    - categorical
+  hierarchy_levels: 3
+  source: VGG16-Places
+
+## porn
+porn:
+  type: classification
+  cardinality: single
+  variable_types:
+    - numeric
+  hierarchy_levels: 1
+  source: OpenNSFW
+  classnames:
+    - porn
+  threshold: 0.3
+porn_2019:
+  type: classification
+  cardinality: single
+  variable_types:
+    - numeric
+  hierarchy_levels: 1
+  source: NSFWJS
+  classnames:
+    - neutral
+    - drawings
+    - hentai
+    - sexy
+    - porn
+
+## demographics
+face:
+  type: detection
+  cardinality: multiple
+  variable_types:
+    - categorical # name
+    - none # bbox
+    - numeric # conf
+  hierarchy_levels: 1
+  source: FaceNet
+age:
+  type: classification
+  cardinality: multiple
+  variable_types:
+    - numeric
+  hierarchy_levels: 1
+  source: Macedo et. al.
+  classnames:
+    - '00-02'
+    - '04-06'
+    - '08-13'
+    - '15-20'
+    - '25-30'
+    - '38-43'
+    - '48-53'
+    - '60+'
+child:
+  type: classification
+  cardinality: multiple
+  variable_types:
+    - numeric
+  hierarchy_levels: 1
+  source: Macedo et. al.
+  classnames:
+    - child
+  threshold: 0.8
+gender:
+  type: classification
+  cardinality: multiple
+  variable_types:
+    - numeric
+  hierarchy_levels: 1
+  source: Macedo et. al.
+  classnames:
+    - female
+  threshold: 0.5
+skin:
+  type: metrics
+  cardinality: multiple
+  variable_types:
+    - numeric
+  hierarchy_levels: 1
+  source: ''
+  metrics:
+    - ita
+
+## others
+metadata:
+  type: metrics
+  cardinality: single
+  variable_types:
+    - categorical
+    - numeric
+    - numeric
+    - categorical
+  hierarchy_levels: 1
+  source: ''
+  metrics:
+    - extension
+    - resolution
+    - aspect
+    - colormode
+
+## quality
+quality:
+  type: metrics
+  cardinality: single
+  variable_types:
+    - numeric
+    - numeric
+    - numeric
+  hierarchy_levels: 1
+  source: ''
+  metrics:
+    - luminance
+    - sharpness
+    - BRISQUE
